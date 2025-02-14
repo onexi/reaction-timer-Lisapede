@@ -3,12 +3,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Messenger App (async/await)</title>
+    <title>MIT Reaction Tester App</title>
     <style>
       /* Basic styling for the messenger app */
       body {
         font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
+        background-color: #e885c0;
         margin: 0;
         padding: 0;
       }
@@ -45,43 +45,140 @@
       #sendBtn {
         padding: 10px 20px;
         border: none;
-        background-color: #007bff;
+        background-color: #EC008C;
         color: #fff;
         border-radius: 3px;
         cursor: pointer;
+        display: block; /* Make buttons block elements */
+        margin: 10px auto; /* Center buttons horizontally */
       }
       #sendBtn:hover {
-        background-color: #0056b3;
+        background-color: #d80383;
+      }
+      #colorchangingBtn {
+        width: 100px;
+        height: 100px;
+        background-color: #28a745; /* Initial color */
+        border-radius: 50%; /* Make it a circle */
+        border: none;
+        cursor: pointer;
+        margin: 20px auto; /* Center the button horizontally */
+        display: block;
+      }
+      
+      #stopBtn {
+        padding: 10px 20px;
+        border: none;
+        background-color: #9aaec2;
+        color: #fff;
+        border-radius: 3px;
+        cursor: pointer;
+        display: block; /* Make buttons block elements */
+        margin: 10px auto; /* Center buttons horizontally */
+      }img {
+        width: 100%;
+        height: 100%;
+      }
+      .small-text {
+        font-size: 12px;
+        text-align: center;
+        margin-top: 20px;
+      }
+      h2 {
+        text-align: center; /* Ensure headers are centered */
       }
     </style>
   </head>
   <body>
     <div id="chat">
-      <ul id="messages"></ul>
+      <img src="https://hips.hearstapps.com/hmg-prod/images/iron-dames-daytona2023-credit-jamey-price-courtesy-lamborghini-ihours-2023-6423364c75757.jpg" alt="Racecar" />
+      <h2>Welcome to the MIT Reaction Tester App</h2>
+      <h4>Click on start game. When the green circle changes to red, click the stop button as fast as you can!</h4>
+      
+      <!-- <ul id="messages"></ul> -->
+     
       <!-- Input fields (without using a <form> element) -->
-      <div class="input-container">
-        <input id="username" type="text" placeholder="Your name" required />
-      </div>
-      <div class="input-container">
-        <input
-          id="message"
-          type="text"
-          placeholder="Type your message"
-          required
-          autocomplete="off"
-        />
-        <button id="sendBtn" type="button">Send</button>
-      </div>
+      
+      <!---->
+        <div class="input-container">
+       
+       </div>
+      
+      <button id="sendBtn" type="button">Start Game</button>
+      <p></p>
+      <button id="colorchangingBtn" type="button"></button>
+      <p></p>
+      <button id="stopBtn" type="button">Press Stop</button>
+      <p>  </p>
+      <h5>Fastest reaction time recorded: <span id="fastestTime">ms</span></h5>
+      <h5>Your reaction time: <span id="reactionTime">ms</span></h5>
+
+      <p>  </p>
+      <div class="small-text">created by Lisa Pederson</div>
+
     </div>
 
     <script>
-      // DOM element references
-      const usernameInput = document.getElementById("username");
-      const messageInput = document.getElementById("message");
-      const sendBtn = document.getElementById("sendBtn");
-      const messagesList = document.getElementById("messages");
 
-      /**
+      // DOM (document object model) element references - points to HTML elements
+      const sendBtn = document.getElementById("sendBtn");
+      const colorchangingBtn = document.getElementById("colorchangingBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      
+      const reactionTimeDisplay = document.getElementById("reactionTime");
+      const fastestTimeDisplay = document.getElementById("fastestTime");
+
+      let startTime;
+      let fastestTime = Infinity;
+
+
+    
+       // Function to start the game
+       function startGame() {
+
+        // Disable the start button to prevent multiple clicks
+        sendBtn.disabled = true;
+
+        // Set a random timeout between 2 to 5 seconds
+        const randomTimeout = Math.random() * 3000 + 2000;
+
+        setTimeout(() => {
+          colorchangingBtn.style.backgroundColor = "red";
+          startTime = new Date().getTime();
+        }, randomTimeout);
+      }
+
+      // Function to stop the game and calculate reaction time
+      function stopGame() {
+        if (colorchangingBtn.style.backgroundColor === "red") {
+          const endTime = new Date().getTime();
+          const reactionTime = endTime - startTime;
+          reactionTimeDisplay.textContent = `${reactionTime} ms`;
+
+          if (reactionTime < fastestTime) {
+            fastestTime = reactionTime;
+            fastestTimeDisplay.textContent = `${fastestTime} ms`;
+          }
+
+          // Reset the button color and enable the start button
+          colorchangingBtn.style.backgroundColor = "";
+          sendBtn.disabled = false;
+        }
+      }
+
+      // Event listeners - to handle button clicks
+      sendBtn.addEventListener("click", startGame);
+      stopBtn.addEventListener("click", stopGame);
+        
+
+      
+    </script>
+  </body>
+</html>
+
+
+<!--
+/**
        * Asynchronously fetches all messages from the server and updates the messages list.
        */
       async function fetchMessages() {
@@ -104,11 +201,14 @@
           console.error("Error fetching messages:", error);
         }
       }
-
-      /**
+-->
+<!--
+/**
        * Asynchronously sends a new message to the server.
        */
-      async function sendMessage() {
+      
+
+       async function sendMessage() {
         const username = usernameInput.value.trim();
         const message = messageInput.value.trim();
 
@@ -149,6 +249,4 @@
       setInterval(fetchMessages, 2000);
       // Initial fetch on page load
       fetchMessages();
-    </script>
-  </body>
-</html>
+-->
